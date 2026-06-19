@@ -86,6 +86,24 @@ def rps_compare(user, comp):
 
     return round_result
 
+# Game history
+def display_history():
+    # Calculates statistics
+    win_percent = games_won / rounds_played * 100
+    lose_percent = games_lost / rounds_played * 100
+    tie_percent = games_tied / rounds_played * 100
+
+    # Prints interesting history statistics (games played, wins/losses/ties, moves chosen, etc.)
+    print(""
+          "\n_______________________"
+     "\n🪶📜 Game History 📜🪶"
+      "\n_______________________")
+    print(f"Rounds played: {rounds_played}")
+
+    print(f"Wins: {win_percent:.2f}, Losses: {lose_percent:.2f}, Ties: {tie_percent:.2f}")
+
+    print(f"Rock chosen: {rock_chosen}, Paper chosen: {paper_chosen}, Scissors chosen: {scissors_chosen}")
+
 
 
 
@@ -94,9 +112,12 @@ def rps_compare(user, comp):
 # Initialise game variables
 mode = "regular"
 rounds_played = 0
-user_wins = 0
-user_losses = 0
-user_ties = 0
+games_won = 0
+games_lost = 0
+games_tied = 0
+rock_chosen = 0
+paper_chosen = 0
+scissors_chosen = 0
 
 rps_list = ["rock", "paper", "scissors", "xxx"]
 game_history = []
@@ -136,6 +157,14 @@ while rounds_played < num_rounds:
     # Gets user choice
     user_choice = string_checker("User Choice: ", rps_list)
 
+    # Tracks use of each choice for history statistics (I added for fun :)
+    if user_choice == "rock":
+        rock_chosen += 1
+    elif user_choice == "paper":
+        paper_chosen += 1
+    elif user_choice == "scissors":
+        scissors_chosen += 1
+
     # Ends game if user enters the exit code
     if user_choice == "xxx":
         break
@@ -146,14 +175,16 @@ while rounds_played < num_rounds:
 
     # Adjust game lost / won / tied counter and adds results to history
     if result == "win":
-        user_wins += 1
+        games_won += 1
         feedback = "User Wins!"
     elif result == "lose":
-        user_losses += 1
+        games_lost += 1
         feedback = "Computer Wins!"
     elif result == "tie":
-        user_ties += 1
+        games_tied += 1
         feedback = "Game Tie!"
+    else:
+        feedback = "[Something went wrong!]"
 
     # Set up round feedback and outputs it to user
     # Add it to the game history list (including round name)
@@ -174,12 +205,17 @@ while rounds_played < num_rounds:
 
 
 # Game loop ends here
+print()
+print("_______________________"
+      "\n🎊🏆 Game Complete! 🏆🎊"
+      "\n_______________________")
+print()
 
 # Game history / statistics area
+view_history = string_checker("Would you like to view your game history? ")
+if view_history == "yes":
+    display_history()
 
-# Calculate statistics
-user_wins = rounds_played - user_ties - user_losses
-win_percent = user_wins / rounds_played * 100
-lose_percent = user_losses / rounds_played * 100
-tie_percent = user_ties / rounds_played * 100
-print(f"wins: {win_percent:.2f}, loses: {lose_percent:.2f}, ties: {tie_percent:.2f}")
+# Program ends
+print()
+print("👋 Thank you for playing!")
